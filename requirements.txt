@@ -1,0 +1,17 @@
+tensorflow==2.21.0
+keras==3.12.1
+numpy==1.26.4
+scipy==1.15.3
+pandas==2.3.3
+matplotlib==3.10.8
+opencv-python==4.11.0.86
+pillow==12.1.1
+ImageIO==2.37.3
+scikit-image==0.25.2
+scikit-learn==1.7.2
+joblib==1.5.3
+threadpoolctl==3.6.0
+lime==0.2.0.1
+quantus==0.6.0
+tf-keras-vis==0.8.7
+tqdm==4.67.3

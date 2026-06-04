@@ -1,0 +1,104 @@
+# ==========================================
+# Python
+# ==========================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================================
+# Virtual Environment
+# ==========================================
+
+.venv/
+venv/
+
+# ==========================================
+# Jupyter
+# ==========================================
+
+.ipynb_checkpoints/
+
+# ==========================================
+# IDE
+# ==========================================
+
+.vscode/
+.idea/
+
+# ==========================================
+# OS
+# ==========================================
+
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Dataset Images
+# Keep folder structure only
+# ==========================================
+
+dataset/raw/*
+dataset/processed/*
+
+!dataset/raw/.gitkeep
+!dataset/processed/.gitkeep
+
+# ==========================================
+# Trained Models
+# ==========================================
+
+artifacts/models/**/*.keras
+artifacts/models/**/*.h5
+artifacts/models/**/*.hdf5
+artifacts/models/**/*.ckpt
+artifacts/models/**/*.weights.h5
+
+# Keep folder structure
+!artifacts/models/.gitkeep
+
+# ==========================================
+# XAI Heatmaps
+# ==========================================
+
+artifacts/heatmaps/**/*.png
+artifacts/heatmaps/**/*.jpg
+artifacts/heatmaps/**/*.jpeg
+artifacts/heatmaps/**/*.svg
+artifacts/heatmaps/**/*.tiff
+artifacts/heatmaps/**/*.tif
+
+# Keep folder structure
+!artifacts/heatmaps/.gitkeep
+
+# ==========================================
+# Evaluation Outputs
+# ==========================================
+
+artifacts/metrics/**/*.csv
+artifacts/metrics/**/*.xlsx
+artifacts/metrics/**/*.json
+artifacts/metrics/**/*.parquet
+
+# Keep folder structure
+!artifacts/metrics/.gitkeep
+
+# ==========================================
+# TensorBoard
+# ==========================================
+
+logs/
+tensorboard_logs/
+
+# ==========================================
+# Temporary Files
+# ==========================================
+
+*.tmp
+*.temp
+
+# ==========================================
+# Notebook Autosave
+# ==========================================
+
+*.nbconvert.ipynb
