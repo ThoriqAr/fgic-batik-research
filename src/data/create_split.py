@@ -1,12 +1,11 @@
 import json
 import pandas as pd
-from pathlib import Path
 from sklearn.model_selection import train_test_split
 
-
-PROCESSED_DIR = Path("dataset/processed")
-METADATA_DIR = Path("dataset/metadata")
-
+from src.config import (
+    PROCESSED_DIR,
+    METADATA_DIR
+)
 
 def create_split(
     train_ratio=0.7,

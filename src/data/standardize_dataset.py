@@ -2,12 +2,13 @@ import json
 import pandas as pd
 from PIL import Image
 from shutil import copy2
-from pathlib import Path
 
+from src.config import (
+    RAW_DIR,
+    PROCESSED_DIR,
+    REPORTS_DIR
+)
 
-RAW_DIR = Path("dataset/raw")
-PROCESSED_DIR = Path("dataset/processed")
-REPORTS_DIR = Path("dataset/reports")
 
 SUPPORTED_EXTENSIONS = {
     ".jpg",

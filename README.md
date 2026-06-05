@@ -119,7 +119,7 @@ atau untuk reproduksi penuh:
 pip install -r requirements-lock.txt
 ```
 
-## 6. Verify Installation
+## 6. Verify Installation Dependencies
 
 Verifikasi hasil install dependency utama menggunakan perintah berikut.
 
@@ -146,6 +146,28 @@ No broken requirements found.
 ```
 
 Jika muncul konflik dependency, hapus virtual environment dan lakukan instalasi ulang menggunakan Python 3.10.11.
+
+## 8. Install Project Package
+
+Langkah ini diperlukan agar module di folder `src` dapat di-import dari notebook maupun script.
+
+```bash
+pip install -e .
+```
+
+## 9. Verifikasi Project Package
+
+Pastikan project package terinstall dengan benar:
+
+```bash
+pip show fgic-batik-research
+```
+
+Output yang diharapkan mengandung baris berikut:
+
+```text
+Editable project location: <root_directory>\fgic-batik-research
+```
 
 # Dataset Preparation
 

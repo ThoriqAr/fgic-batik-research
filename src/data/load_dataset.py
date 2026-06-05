@@ -1,10 +1,8 @@
 import pandas as pd
 import tensorflow as tf
-from pathlib import Path
 from src.data.preprocess_image import preprocess_image
 
-
-PROCESSED_DIR = Path("dataset/processed")
+from src.config import PROCESSED_DIR
 
 
 def _load_sample(

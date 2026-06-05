@@ -5,6 +5,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+**/*.egg-info/
 
 # ==========================================
 # Virtual Environment
@@ -82,8 +83,12 @@ artifacts/metrics/**/*.xlsx
 artifacts/metrics/**/*.json
 artifacts/metrics/**/*.parquet
 
+# EDA Outputs
+
+artifacts/metrics/eda/*
+
 # Keep folder structure
-!artifacts/metrics/.gitkeep
+!artifacts/metrics/eda/.gitkeep
 
 # ==========================================
 # TensorBoard

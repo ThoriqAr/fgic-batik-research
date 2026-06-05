@@ -1,9 +1,11 @@
 import json
-from pathlib import Path
 
+from src.config import (
+    PROCESSED_DIR,
+    METADATA_DIR
+)
 
-PROCESSED_DIR = Path("dataset/processed")
-OUTPUT_PATH = Path("dataset/metadata/class_mapping.json")
+OUTPUT_PATH = METADATA_DIR / "class_mapping.json"
 
 
 def generate_class_mapping():
