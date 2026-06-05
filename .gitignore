@@ -40,9 +40,11 @@ Thumbs.db
 
 dataset/raw/*
 dataset/processed/*
+dataset/reports/*
 
 !dataset/raw/.gitkeep
 !dataset/processed/.gitkeep
+!dataset/reports/.gitkeep
 
 # ==========================================
 # Trained Models
