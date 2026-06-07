@@ -1,27 +1,14 @@
 import json
-import hashlib
 import pandas as pd
-from pathlib import Path
 
-from src.config import (
+from src.utils.calculate import (
+    calculate_md5
+)
+
+from src.utils.path_config import (
     PROCESSED_DIR,
     REPORTS_DIR
 )
-
-
-def calculate_md5(file_path: Path) -> str:
-
-    hash_md5 = hashlib.md5()
-
-    with open(file_path, "rb") as f:
-
-        for chunk in iter(
-            lambda: f.read(4096),
-            b""
-        ):
-            hash_md5.update(chunk)
-
-    return hash_md5.hexdigest()
 
 
 def detect_duplicates():

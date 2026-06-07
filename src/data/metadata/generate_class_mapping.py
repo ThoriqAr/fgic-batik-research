@@ -1,6 +1,6 @@
 import json
 
-from src.config import (
+from src.utils.path_config import (
     PROCESSED_DIR,
     METADATA_DIR
 )

@@ -1,8 +1,8 @@
 import pandas as pd
 import tensorflow as tf
-from src.data.preprocess_image import preprocess_image
+from src.data.preparation.preprocess_image import preprocess_image
 
-from src.config import PROCESSED_DIR
+from src.utils.path_config import PROCESSED_DIR
 
 
 def _load_sample(
@@ -30,9 +30,11 @@ def _load_sample(
 
 def load_dataset(
     csv_path,
-    image_size=(224, 224),
+    image_size=(224,224),
     batch_size=32,
     shuffle=False,
+    seed=42,
+    num_classes=20,
     preprocessing_fn=None
 ):
 
@@ -43,16 +45,25 @@ def load_dataset(
         for p in df["filepath"]
     ]
 
-    labels = df["class_id"].tolist()
+    labels = tf.keras.utils.to_categorical(
+        df["class_id"],
+        num_classes=num_classes
+    )
 
     ds = tf.data.Dataset.from_tensor_slices(
         (image_paths, labels)
     )
 
+    options = tf.data.Options()
+
+    options.experimental_deterministic = True
+
+    ds = ds.with_options(options)
+
     if shuffle:
         ds = ds.shuffle(
             buffer_size=len(df),
-            seed=42
+            seed=seed
         )
 
     ds = ds.map(
@@ -65,7 +76,12 @@ def load_dataset(
         num_parallel_calls=tf.data.AUTOTUNE
     )
 
-    ds = ds.batch(batch_size)
+    ds = ds.cache()
+
+    ds = ds.batch(
+        batch_size,
+        drop_remainder=False
+    )
 
     ds = ds.prefetch(
         tf.data.AUTOTUNE

@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.config import (
+from src.utils.path_config import (
     PROCESSED_DIR,
     METADATA_DIR
 )

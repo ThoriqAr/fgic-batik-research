@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 
-from src.config import (
+from src.utils.path_config import (
     RAW_DIR,
     PROCESSED_DIR,
     METRICS_DIR

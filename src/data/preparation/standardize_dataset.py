@@ -3,7 +3,7 @@ import pandas as pd
 from PIL import Image
 from shutil import copy2
 
-from src.config import (
+from src.utils.path_config import (
     RAW_DIR,
     PROCESSED_DIR,
     REPORTS_DIR
