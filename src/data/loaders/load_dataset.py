@@ -1,15 +1,17 @@
 import pandas as pd
 import tensorflow as tf
-from src.data.preparation.preprocess_image import preprocess_image
 
 from src.utils.path_config import PROCESSED_DIR
+
+from src.data.preparation.preprocess_image import (
+    preprocess_image
+)
 
 
 def _load_sample(
     image_path,
     label,
-    image_size,
-    preprocessing_fn
+    preprocessing_config
 ):
 
     image = tf.io.read_file(image_path)
@@ -21,8 +23,7 @@ def _load_sample(
 
     image = preprocess_image(
         image=image,
-        image_size=image_size,
-        preprocessing_fn=preprocessing_fn
+        preprocessing_config=preprocessing_config
     )
 
     return image, label
@@ -30,7 +31,9 @@ def _load_sample(
 
 def load_dataset(
     csv_path,
-    image_size=(224,224),
+    preprocessing_config,
+    augmentation_layer=None,
+    is_training=False,
     batch_size=32,
     shuffle=False,
     seed=42,
@@ -70,13 +73,40 @@ def load_dataset(
         lambda x, y: _load_sample(
             x,
             y,
-            image_size,
-            preprocessing_fn
+            preprocessing_config,
         ),
         num_parallel_calls=tf.data.AUTOTUNE
     )
 
     ds = ds.cache()
+
+    if (
+        is_training
+        and
+        augmentation_layer is not None
+    ):
+
+        ds = ds.map(
+            lambda x, y: (
+                augmentation_layer(
+                    x,
+                    training=True
+                ),
+                y
+            ),
+            num_parallel_calls=
+                tf.data.AUTOTUNE
+        )
+
+    if preprocessing_fn is not None:
+
+        ds = ds.map(
+            lambda x, y: (
+                preprocessing_fn(x),
+                y
+            ),
+            num_parallel_calls=tf.data.AUTOTUNE
+        )
 
     ds = ds.batch(
         batch_size,

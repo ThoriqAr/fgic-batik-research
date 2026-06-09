@@ -3,24 +3,24 @@ from tensorflow.keras import layers
 from tensorflow.keras import models
 from tensorflow.keras.applications import MobileNetV2
 
-def build_mobilenetv2(config):
+def build_mobilenetv2(train_config):
 
     base_model = MobileNetV2(
         weights="imagenet",
         include_top=False,
         input_shape=(
-            config.image_size[0],
-            config.image_size[1],
+            train_config.preprocessing_config.image_size[0],
+            train_config.preprocessing_config.image_size[1],
             3
         )
     )
 
-    base_model.trainable = config.trainable_backbone
+    base_model.trainable = train_config.trainable_backbone
 
     inputs = tf.keras.Input(
         shape=(
-            config.image_size[0],
-            config.image_size[1],
+            train_config.preprocessing_config.image_size[0],
+            train_config.preprocessing_config.image_size[1],
             3
         )
     )
@@ -42,7 +42,7 @@ def build_mobilenetv2(config):
     x = layers.Dropout(0.3)(x)
 
     outputs = layers.Dense(
-        config.num_classes,
+        train_config.num_classes,
         activation="softmax"
     )(x)
 
@@ -53,7 +53,7 @@ def build_mobilenetv2(config):
 
     model.compile(
         optimizer=tf.keras.optimizers.Adam(
-            learning_rate=config.learning_rate
+            learning_rate=train_config.learning_rate
         ),
         loss="categorical_crossentropy",
         metrics=["accuracy"]

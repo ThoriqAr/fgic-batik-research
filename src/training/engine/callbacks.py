@@ -21,14 +21,14 @@ def create_callbacks(output_dir):
 
         tf.keras.callbacks.EarlyStopping(
             monitor="val_loss",
-            patience=10,
+            patience=5,
             restore_best_weights=True
         ),
 
         tf.keras.callbacks.ReduceLROnPlateau(
             monitor="val_loss",
             factor=0.3,
-            patience=3,
+            patience=2,
             min_lr=1e-6
         ),
 

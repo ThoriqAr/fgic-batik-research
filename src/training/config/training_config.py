@@ -1,6 +1,14 @@
 from pathlib import Path
 from dataclasses import dataclass
 
+from src.preprocessing.config.preprocessing_config import (
+    PreprocessingConfig
+)
+
+from src.preprocessing.config.augmentation_config import (
+    AugmentationConfig
+)
+
 
 @dataclass
 class TrainingConfig:
@@ -9,7 +17,9 @@ class TrainingConfig:
 
     model_name: str
 
-    image_size: tuple
+    preprocessing_config: PreprocessingConfig
+
+    augmentation_config: AugmentationConfig
 
     batch_size: int
 

@@ -1,23 +1,23 @@
 import tensorflow as tf
 
+from src.preprocessing.pipeline.preprocessing_pipeline import (
+    apply_preprocessing
+)
+
 
 def preprocess_image(
     image,
-    image_size=(224, 224),
-    preprocessing_fn=None
+    preprocessing_config
 ):
 
-    image = tf.image.resize(
+    image = apply_preprocessing(
         image,
-        image_size
+        preprocessing_config
     )
 
     image = tf.cast(
         image,
         tf.float32
     )
-
-    if preprocessing_fn is not None:
-        image = preprocessing_fn(image)
 
     return image

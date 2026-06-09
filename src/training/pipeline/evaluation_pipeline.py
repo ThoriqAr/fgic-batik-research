@@ -13,7 +13,7 @@ from src.data.loaders.load_class_mapping import (
 )
 
 from src.training.data.dataset import (
-    create_datasets
+    create_evaluation_dataset
 )
 
 from src.training.evaluation.metrics import (
@@ -29,13 +29,13 @@ from src.training.artifacts.evaluation_artifacts import (
 
 def run_evaluation(
     model_path,
-    config,
+    train_config,
     output_dir
 ):
     
     evaluation_dir = (
         output_dir /
-        f"{config.experiment_name}_evaluation"
+        f"{train_config.experiment_name}_evaluation"
     )
 
     evaluation_dir.mkdir(
@@ -45,22 +45,22 @@ def run_evaluation(
 
     class_names = get_class_names()
 
-    if config.model_name == "mobilenetv2":
+    if train_config.model_name == "mobilenetv2":
 
         preprocess_input = mobilenet_preprocess
 
-    elif config.model_name == "resnet50":
+    elif train_config.model_name == "resnet50":
 
         preprocess_input = resnet_preprocess
 
     else:
 
         raise ValueError(
-            config.model_name
+            train_config.model_name
         )
 
-    _, _, test_ds = create_datasets(
-        config,
+    test_ds = create_evaluation_dataset(
+        train_config,
         preprocess_input
     )
 

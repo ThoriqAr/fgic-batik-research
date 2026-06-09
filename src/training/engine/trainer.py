@@ -9,7 +9,7 @@ def train_model(
     model,
     train_ds,
     val_ds,
-    config,
+    train_config,
     output_dir
 ):
 
@@ -22,7 +22,7 @@ def train_model(
     history = model.fit(
         train_ds,
         validation_data=val_ds,
-        epochs=config.epochs,
+        epochs=train_config.epochs,
         callbacks=callbacks
     )
 

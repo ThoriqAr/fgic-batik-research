@@ -13,7 +13,7 @@ from src.utils.path_config import (
 )
 
 from src.training.data.dataset import (
-    create_datasets
+    create_training_datasets
 )
 
 from src.training.engine.trainer import (
@@ -40,14 +40,14 @@ from src.training.models.resnet50 import (
 )
 
 
-def run_training(config):
+def run_training(train_config):
 
     set_global_seed(
-        config.seed
+        train_config.seed
     )
 
     experiment_id = (
-        f"{config.experiment_name}_"
+        f"{train_config.experiment_name}_"
         f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     )
 
@@ -74,39 +74,39 @@ def run_training(config):
 
     print("\n[1/3] Build model...")
 
-    if config.model_name == "mobilenetv2":
+    if train_config.model_name == "mobilenetv2":
 
         preprocessing_fn = (
             mobilenet_preprocess
         )
 
         model = build_mobilenetv2(
-            config
+            train_config
         )
 
-    elif config.model_name == "resnet50":
+    elif train_config.model_name == "resnet50":
 
         preprocessing_fn = (
             resnet_preprocess
         )
 
         model = build_resnet50(
-            config
+            train_config
         )
 
     else:
 
         raise ValueError(
-            f"Unknown model: {config.model_name}"
+            f"Unknown model: {train_config.model_name}"
         )
     
     print(
-        f"Model created: {config.model_name}"
+        f"Model created: {train_config.model_name}"
     )
 
-    train_ds, val_ds, test_ds = (
-        create_datasets(
-            config,
+    train_ds, val_ds = (
+        create_training_datasets(
+            train_config,
             preprocessing_fn
         )
     )
@@ -117,7 +117,7 @@ def run_training(config):
         model,
         train_ds,
         val_ds,
-        config,
+        train_config,
         output_dir
     )
 
@@ -138,7 +138,7 @@ def run_training(config):
     save_metadata(
         training_dir /
         "metadata.json",
-        config
+        train_config
     )
 
     save_best_epoch(

@@ -2,8 +2,8 @@ import json
 import keras
 import pandas as pd
 import tensorflow as tf
-from datetime import datetime
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 from src.utils.calculate import (
     calculate_dataset_hash,
@@ -79,70 +79,106 @@ def save_best_epoch(
 
 def save_metadata(
     output_path,
-    config
+    train_config
 ):
 
     metadata = {
 
         "experiment_name":
-            config.experiment_name,
+            train_config.experiment_name,
 
         "model_name":
-            config.model_name,
+            train_config.model_name,
 
         "image_size":
-            list(config.image_size),
+            list(train_config.preprocessing_config.image_size),
+
+        "color_mode":
+            train_config.preprocessing_config.color_mode,
+
+        "augmentation":{
+
+            "preset_name":
+                train_config
+                .augmentation_config
+                .preset_name,
+
+            "rotation":
+                train_config
+                .augmentation_config
+                .rotation,
+
+            "width_shift":
+                train_config
+                .augmentation_config
+                .width_shift,
+
+            "height_shift":
+                train_config
+                .augmentation_config
+                .height_shift,
+
+            "zoom":
+                train_config
+                .augmentation_config
+                .zoom,
+
+            "brightness":
+                train_config
+                .augmentation_config
+                .brightness
+        },
 
         "batch_size":
-            config.batch_size,
+            train_config.batch_size,
 
         "epochs":
-            config.epochs,
+            train_config.epochs,
 
         "learning_rate":
-            config.learning_rate,
+            train_config.learning_rate,
 
         "learning_rate_display":
-            config.learning_rate_display,
+            train_config.learning_rate_display,
 
         "seed":
-            config.seed,
+            train_config.seed,
 
         "num_classes":
-            config.num_classes,
+            train_config.num_classes,
 
         "trainable_backbone":
-            config.trainable_backbone,
+            train_config.trainable_backbone,
 
         "train_csv":
-            config.train_csv.as_posix(),
+            train_config.train_csv.as_posix(),
 
         "val_csv":
-            config.val_csv.as_posix(),
+            train_config.val_csv.as_posix(),
 
         "test_csv":
-            config.test_csv.as_posix(),
+            train_config.test_csv.as_posix(),
 
         "train_csv_hash":
             calculate_file_hash(
-                config.train_csv
+                train_config.train_csv
             ),
 
         "val_csv_hash":
             calculate_file_hash(
-                config.val_csv
+                train_config.val_csv
             ),
 
         "test_csv_hash":
             calculate_file_hash(
-                config.test_csv
+                train_config.test_csv
             ),
 
         "dataset_hash":
             calculate_dataset_hash(
-                config.train_csv,
-                config.val_csv,
-                config.test_csv
+                train_config.train_csv,
+                train_config.val_csv,
+                train_config.test_csv
             ),
 
         "class_mapping_file":
