@@ -2,18 +2,17 @@ import tensorflow as tf
 from pathlib import Path
 
 
-def create_callbacks(output_dir):
+def create_callbacks(artifact_dir):
 
-    output_dir = Path(output_dir)
+    artifact_dir = Path(artifact_dir)
 
     checkpoint_path = (
-        output_dir /
+        artifact_dir /
         "best_model.keras"
     )
 
     history_path = (
-        output_dir /
-        "training_artifacts" /
+        artifact_dir /
         "history_training.csv"
     )
 
@@ -34,8 +33,8 @@ def create_callbacks(output_dir):
 
         tf.keras.callbacks.ModelCheckpoint(
             filepath=str(checkpoint_path),
-            monitor="val_accuracy",
-            mode="max",
+            monitor="val_loss",
+            mode="min",
             save_best_only=True,
             verbose=1
         ),

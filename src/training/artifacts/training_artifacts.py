@@ -24,17 +24,19 @@ def save_best_epoch(
 ):
 
     best_epoch_idx = (
-        history.history["val_accuracy"]
+        history.history["val_loss"]
         .index(
-            max(
-                history.history["val_accuracy"]
+            min(
+                history.history["val_loss"]
             )
         )
     )
 
     summary = {
 
-        "selected_metric": "val_accuracy",
+        "selected_metric": "val_loss",
+
+        "selection_rule": "minimum_validation_loss",
 
         "best_epoch":
             best_epoch_idx + 1,
@@ -149,6 +151,27 @@ def save_metadata(
 
         "trainable_backbone":
             train_config.trainable_backbone,
+
+        "backbone_total_layers":
+            train_config.backbone_total_layers,
+
+        "unfreeze_last_n_layers":
+            train_config.unfreeze_last_n_layers,
+
+        "trainable_backbone_layers":
+            train_config.trainable_backbone_layers,
+
+        "fine_tune_stage":
+            train_config.fine_tune_stage,
+
+        "fine_tune_from":
+            (
+                train_config
+                .fine_tune_from
+                .as_posix()
+                if train_config.fine_tune_from
+                else None
+            ),
 
         "train_csv":
             train_config.train_csv.as_posix(),

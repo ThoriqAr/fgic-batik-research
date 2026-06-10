@@ -35,7 +35,7 @@ def run_evaluation(
     
     evaluation_dir = (
         output_dir /
-        f"{train_config.experiment_name}_evaluation"
+        "evaluation"
     )
 
     evaluation_dir.mkdir(

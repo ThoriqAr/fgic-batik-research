@@ -3,6 +3,7 @@ from tensorflow.keras import layers
 from tensorflow.keras import models
 from tensorflow.keras.applications import MobileNetV2
 
+
 def build_mobilenetv2(train_config):
 
     base_model = MobileNetV2(
@@ -12,10 +13,21 @@ def build_mobilenetv2(train_config):
             train_config.preprocessing_config.image_size[0],
             train_config.preprocessing_config.image_size[1],
             3
-        )
+        ),
+        name="backbone"
     )
 
     base_model.trainable = train_config.trainable_backbone
+
+    train_config.backbone_total_layers = (
+        len(base_model.layers)
+    )
+
+    train_config.trainable_backbone_layers = sum(
+        1
+        for layer in base_model.layers
+        if layer.trainable
+    )
 
     inputs = tf.keras.Input(
         shape=(
@@ -55,7 +67,9 @@ def build_mobilenetv2(train_config):
         optimizer=tf.keras.optimizers.Adam(
             learning_rate=train_config.learning_rate
         ),
-        loss="categorical_crossentropy",
+        loss=tf.keras.losses.CategoricalCrossentropy(
+            label_smoothing=0.05
+        ),
         metrics=["accuracy"]
     )
 

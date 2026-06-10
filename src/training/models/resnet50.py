@@ -3,6 +3,7 @@ from tensorflow.keras import layers
 from tensorflow.keras import models
 from tensorflow.keras.applications import ResNet50
 
+
 def build_resnet50(train_config):
 
     base_model = ResNet50(
@@ -12,10 +13,21 @@ def build_resnet50(train_config):
             train_config.preprocessing_config.image_size[0],
             train_config.preprocessing_config.image_size[1],
             3
-        )
+        ),
+        name="backbone"
     )
 
     base_model.trainable = train_config.trainable_backbone
+
+    train_config.backbone_total_layers = (
+        len(base_model.layers)
+    )
+
+    train_config.trainable_backbone_layers = sum(
+        1
+        for layer in base_model.layers
+        if layer.trainable
+    )
 
     inputs = tf.keras.Input(
         shape=(

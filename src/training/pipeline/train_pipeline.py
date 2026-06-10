@@ -64,7 +64,7 @@ def run_training(train_config):
 
     training_dir = (
         output_dir /
-        "training_artifacts"
+        "training_baseline_artifacts"
     )
 
     training_dir.mkdir(
@@ -118,17 +118,12 @@ def run_training(train_config):
         train_ds,
         val_ds,
         train_config,
-        output_dir
+        training_dir
     )
 
     print("Training completed.")
 
-    print("\n[3/3] Save model & metadata...")
-
-    model.save(
-        output_dir /
-        "model.keras"
-    )
+    print("\n[3/3] Save metadata...")
 
     history_csv = (
         training_dir /

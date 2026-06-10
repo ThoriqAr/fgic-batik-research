@@ -40,3 +40,13 @@ class TrainingConfig:
     test_csv: Path
 
     trainable_backbone: bool = False
+
+    backbone_total_layers: int | None = None
+
+    trainable_backbone_layers: int | None = None
+
+    unfreeze_last_n_layers: int | None = None
+
+    fine_tune_stage: int | None = None
+
+    fine_tune_from: Path | None = None

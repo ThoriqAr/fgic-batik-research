@@ -10,13 +10,13 @@ def train_model(
     train_ds,
     val_ds,
     train_config,
-    output_dir
+    artifact_dir
 ):
 
-    output_dir = Path(output_dir)
+    artifact_dir = Path(artifact_dir)
 
     callbacks = create_callbacks(
-        output_dir
+        artifact_dir
     )
 
     history = model.fit(
