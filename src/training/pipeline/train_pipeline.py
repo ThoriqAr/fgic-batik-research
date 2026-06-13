@@ -1,15 +1,11 @@
 from datetime import datetime
 
-from tensorflow.keras.applications.mobilenet_v2 import (
-    preprocess_input as mobilenet_preprocess
-)
-
-from tensorflow.keras.applications.resnet50 import (
-    preprocess_input as resnet_preprocess
-)
-
 from src.utils.path_config import (
     ARTIFACTS_DIR,
+)
+
+from src.utils.preprocess_input import (
+    get_preprocess_fn
 )
 
 from src.training.data.dataset import (
@@ -37,6 +33,10 @@ from src.training.models.mobilenetv2 import (
 
 from src.training.models.resnet50 import (
     build_resnet50
+)
+
+from src.utils.target_layer import (
+    get_last_conv_layer
 )
 
 
@@ -76,8 +76,8 @@ def run_training(train_config):
 
     if train_config.model_name == "mobilenetv2":
 
-        preprocessing_fn = (
-            mobilenet_preprocess
+        preprocessing_fn = get_preprocess_fn(
+            train_config.model_name
         )
 
         model = build_mobilenetv2(
@@ -86,8 +86,8 @@ def run_training(train_config):
 
     elif train_config.model_name == "resnet50":
 
-        preprocessing_fn = (
-            resnet_preprocess
+        preprocessing_fn = get_preprocess_fn(
+            train_config.model_name
         )
 
         model = build_resnet50(
@@ -102,6 +102,10 @@ def run_training(train_config):
     
     print(
         f"Model created: {train_config.model_name}"
+    )
+
+    train_config.last_conv_layer_name = (
+        get_last_conv_layer(model)
     )
 
     train_ds, val_ds = (

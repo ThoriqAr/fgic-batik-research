@@ -92,6 +92,11 @@ def save_metadata(
         "model_name":
             train_config.model_name,
 
+        "backbone_name": "backbone",
+
+        "last_conv_layer_name":
+            train_config.last_conv_layer_name,
+
         "image_size":
             list(train_config.preprocessing_config.image_size),
 

@@ -1,13 +1,5 @@
 from tensorflow.keras.models import load_model
 
-from tensorflow.keras.applications.mobilenet_v2 import (
-    preprocess_input as mobilenet_preprocess
-)
-
-from tensorflow.keras.applications.resnet50 import (
-    preprocess_input as resnet_preprocess
-)
-
 from src.data.loaders.load_class_mapping import (
     get_class_names
 )
@@ -24,6 +16,10 @@ from src.training.artifacts.evaluation_artifacts import (
     save_report,
     save_confusion_matrix,
     save_confusion_matrix_plot
+)
+
+from src.utils.preprocess_input import (
+    get_preprocess_fn
 )
 
 
@@ -47,11 +43,15 @@ def run_evaluation(
 
     if train_config.model_name == "mobilenetv2":
 
-        preprocess_input = mobilenet_preprocess
+        preprocessing_fn = get_preprocess_fn(
+            train_config.model_name
+        )
 
     elif train_config.model_name == "resnet50":
 
-        preprocess_input = resnet_preprocess
+        preprocessing_fn = get_preprocess_fn(
+            train_config.model_name
+        )
 
     else:
 
@@ -61,7 +61,7 @@ def run_evaluation(
 
     test_ds = create_evaluation_dataset(
         train_config,
-        preprocess_input
+        preprocessing_fn
     )
 
     print("\n[1/3] Load model...")

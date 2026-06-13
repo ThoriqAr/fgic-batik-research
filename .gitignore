@@ -52,15 +52,11 @@ dataset/reports/*
 # ==========================================
 
 artifacts/models/*
+artifacts/attributions/*
 
-# Keep legacy folder
-!artifacts/models/legacy/
-
-# Ignore everything inside legacy
-artifacts/models/legacy/*
-
-# Keep legacy structure
-!artifacts/models/legacy/.gitkeep
+# Keep structure
+!artifacts/models/.gitkeep
+!artifacts/attribution/.gitkeep
 
 # ==========================================
 # XAI Heatmaps

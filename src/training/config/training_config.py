@@ -41,6 +41,8 @@ class TrainingConfig:
 
     trainable_backbone: bool = False
 
+    last_conv_layer_name: str | None = None
+
     backbone_total_layers: int | None = None
 
     trainable_backbone_layers: int | None = None

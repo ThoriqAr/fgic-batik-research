@@ -3,8 +3,8 @@ import tensorflow as tf
 
 from src.utils.path_config import PROCESSED_DIR
 
-from src.data.preparation.preprocess_image import (
-    preprocess_image
+from src.data.loaders.load_image import (
+    load_image
 )
 
 
@@ -14,16 +14,9 @@ def _load_sample(
     preprocessing_config
 ):
 
-    image = tf.io.read_file(image_path)
-
-    image = tf.image.decode_jpeg(
-        image,
-        channels=3
-    )
-
-    image = preprocess_image(
-        image=image,
-        preprocessing_config=preprocessing_config
+    image = load_image(
+        image_path,
+        preprocessing_config
     )
 
     return image, label

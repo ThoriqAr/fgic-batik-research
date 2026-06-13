@@ -1,14 +1,4 @@
 import tensorflow as tf
-from pathlib import Path
-
-
-from tensorflow.keras.applications.mobilenet_v2 import (
-    preprocess_input as mobilenet_preprocess
-)
-
-from tensorflow.keras.applications.resnet50 import (
-    preprocess_input as resnet_preprocess
-)
 
 from src.training.models.configure_fine_tune import (
     configure_model_for_fine_tune
@@ -31,6 +21,10 @@ from src.training.artifacts.training_artifacts import (
 
 from src.utils.seed import (
     set_global_seed
+)
+
+from src.utils.preprocess_input import (
+    get_preprocess_fn
 )
 
 
@@ -69,11 +63,15 @@ def run_fine_tuning(train_config):
 
     if train_config.model_name == "mobilenetv2":
 
-        preprocessing_fn = mobilenet_preprocess
+        preprocessing_fn = get_preprocess_fn(
+            train_config.model_name
+        )
 
     elif train_config.model_name == "resnet50":
 
-        preprocessing_fn = resnet_preprocess
+        preprocessing_fn = get_preprocess_fn(
+            train_config.model_name
+        )
 
     else:
 
