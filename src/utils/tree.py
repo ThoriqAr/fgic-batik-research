@@ -4,6 +4,7 @@ IGNORE_DIRS = {
     "__pycache__",
     ".venv",
     ".git",
+    "attribution_maps",
     "batik_betawi",
     "batik_bokor_kencono",
     "batik_buketan",

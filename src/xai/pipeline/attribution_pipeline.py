@@ -1,7 +1,6 @@
 import pandas as pd
 from tqdm.auto import tqdm
 from datetime import datetime
-
 from tensorflow.keras.models import load_model
 
 from src.utils.path_config import (
@@ -221,7 +220,7 @@ def run_attribution(
 
                 continue
 
-            heatmap = (
+            attribution_result = (
                 generate_attribution(
                     method=attribution_config.xai_method,
                     model=model,
@@ -231,7 +230,6 @@ def run_attribution(
                     backbone_name=metadata["backbone_name"],
                     last_conv_layer_name=metadata["last_conv_layer_name"],
                     preprocess_fn=preprocess_fn,
-                    target_size=tuple(metadata["image_size"]),
                     lime_config=
                         vars(lime_config)
                         if lime_config
@@ -257,7 +255,7 @@ def run_attribution(
                 attribution_config=attribution_config,
                 preprocess_fn=preprocess_fn,
                 attribution_id=attribution_id,
-                heatmap=heatmap,
+                attribution_result=attribution_result,
                 pred_index=pred_index,
                 pred_label=pred_label,
                 confidence=confidence,

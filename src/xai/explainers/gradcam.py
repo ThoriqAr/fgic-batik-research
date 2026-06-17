@@ -1,11 +1,8 @@
+import numpy as np
 import tensorflow as tf
 
-from src.xai.standardization.standardize import (
-    standardize_heatmap
-)
 
-
-def _build_gradcam_heatmap(
+def build_gradcam_heatmap(
     processed_image,
     model,
     pred_index,
@@ -118,11 +115,10 @@ def generate_gradcam(
     pred_index,
     backbone_name,
     last_conv_layer_name,
-    target_size=(224, 224)
 ):
 
-    heatmap = (
-        _build_gradcam_heatmap(
+    raw_heatmap = (
+        build_gradcam_heatmap(
             processed_image=processed_image,
             model=model,
             pred_index=pred_index,
@@ -131,7 +127,11 @@ def generate_gradcam(
         )
     )
 
-    return standardize_heatmap(
-        heatmap,
-        target_size
-    )
+    return {
+
+        "raw_heatmap":
+            raw_heatmap.astype(
+                np.float32
+            )
+
+    }

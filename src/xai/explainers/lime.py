@@ -2,12 +2,7 @@ import numpy as np
 from lime import lime_image
 from skimage.segmentation import slic
 
-from src.xai.standardization.standardize import (
-    standardize_heatmap
-)
-
-
-def build_lime_heatmap(
+def build_lime_explanation(
     model,
     original_image,
     preprocess_fn,
@@ -17,7 +12,7 @@ def build_lime_heatmap(
     sigma=1,
     seed=42
 ):
-
+    
     explainer = (
         lime_image.LimeImageExplainer(
             random_state=seed
@@ -76,29 +71,16 @@ def build_lime_heatmap(
         ]
     )
 
-    heatmap = np.zeros_like(
-        segments,
-        dtype=np.float32
-    )
-
-    for seg_id, weight in local_exp.items():
-
-        heatmap[
-            segments == seg_id
-        ] = abs(weight)
-
-    heatmap /= (
-        heatmap.max() + 1e-8
-    )
-
-    return heatmap
+    return {
+        "segments": segments,
+        "local_exp": local_exp
+    }
 
 
 def generate_lime(
     model,
     original_image,
     preprocess_fn,
-    target_size,
     num_samples=1000,
     n_segments=150,
     compactness=5,
@@ -106,8 +88,8 @@ def generate_lime(
     seed=42
 ):
 
-    heatmap = (
-        build_lime_heatmap(
+    explanation = (
+        build_lime_explanation(
             model=model,
             original_image=original_image,
             preprocess_fn=preprocess_fn,
@@ -119,7 +101,44 @@ def generate_lime(
         )
     )
 
-    return standardize_heatmap(
-        heatmap,
-        target_size
+    segments = explanation["segments"]
+
+    local_exp = explanation["local_exp"]
+
+    segment_ids = np.array(
+        list(local_exp.keys()),
+        dtype=np.int32
     )
+
+    weights = np.array(
+        list(local_exp.values()),
+        dtype=np.float32
+    )
+
+    if len(weights) > 0:
+
+        max_abs_weight = np.max(
+            np.abs(weights)
+        ).astype(np.float32)
+
+    else:
+
+        max_abs_weight = np.float32(0.0)
+
+    return {
+
+        "segments":
+            segments.astype(
+                np.int32
+            ),
+
+        "segment_ids":
+            segment_ids,
+
+        "weights":
+            weights,
+
+        "max_abs_weight":
+            max_abs_weight
+
+    }

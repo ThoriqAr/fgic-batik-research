@@ -23,7 +23,7 @@ def save_attribution(
     attribution_config,
     preprocess_fn,
     attribution_id,
-    heatmap,
+    attribution_result,
     pred_index,
     pred_label,
     confidence,
@@ -63,9 +63,6 @@ def save_attribution(
         "color_mode":
             metadata["color_mode"],
 
-        "heatmap":
-            heatmap.astype("float32"),
-
         "pred_index":
             pred_index,
 
@@ -90,6 +87,10 @@ def save_attribution(
         "class_mapping_hash":
             metadata["class_mapping_hash"]
     }
+
+    attribution_data.update(
+        attribution_result
+    )
 
     np.savez_compressed(
         output_path,

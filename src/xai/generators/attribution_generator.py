@@ -16,7 +16,6 @@ def generate_attribution(
     backbone_name,
     last_conv_layer_name,
     preprocess_fn,
-    target_size,
     lime_config=None
 ):
 
@@ -29,8 +28,7 @@ def generate_attribution(
             processed_image=processed_image,
             pred_index=pred_index,
             backbone_name=backbone_name,
-            last_conv_layer_name=last_conv_layer_name,
-            target_size=target_size
+            last_conv_layer_name=last_conv_layer_name
         )
 
     if method == "lime":
@@ -43,7 +41,6 @@ def generate_attribution(
             model=model,
             original_image=original_image,
             preprocess_fn=preprocess_fn,
-            target_size=target_size,
             **lime_config
         )
 
