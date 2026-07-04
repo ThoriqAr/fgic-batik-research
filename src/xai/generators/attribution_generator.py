@@ -16,6 +16,7 @@ def generate_attribution(
     backbone_name,
     last_conv_layer_name,
     preprocess_fn,
+    target_class=None,
     lime_config=None
 ):
 
@@ -33,6 +34,12 @@ def generate_attribution(
 
     if method == "lime":
 
+        target_class = (
+            target_class
+            if target_class is not None
+            else pred_index
+        )
+
         lime_config = (
             lime_config or {}
         )
@@ -41,6 +48,7 @@ def generate_attribution(
             model=model,
             original_image=original_image,
             preprocess_fn=preprocess_fn,
+            target_class=target_class,
             **lime_config
         )
 

@@ -53,10 +53,12 @@ dataset/reports/*
 
 artifacts/models/*
 artifacts/attributions/*
+artifacts/evaluations/*
 
 # Keep structure
 !artifacts/models/.gitkeep
 !artifacts/attribution/.gitkeep
+!artifacts/evaluations/.gitkeep
 
 # ==========================================
 # XAI Heatmaps

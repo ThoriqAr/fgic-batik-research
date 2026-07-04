@@ -10,10 +10,12 @@ def load_image(
     image_path,
     preprocessing_config
 ):
-
-    image_path = str(
-        Path(image_path)
-    )
+    
+    if isinstance(
+        image_path,
+        (str, Path)
+    ):
+        image_path = str(image_path)
 
     image = tf.io.read_file(
         image_path

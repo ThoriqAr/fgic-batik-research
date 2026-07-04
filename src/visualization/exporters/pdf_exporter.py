@@ -7,12 +7,12 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 def export_pdf(
     results,
-    attribution_dir,
+    manifest_path,
     report_type="per_class"
 ):
 
     attribution_dir = Path(
-        attribution_dir
+        manifest_path
     )
 
     experiment_dir = attribution_dir.parent

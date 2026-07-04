@@ -8,52 +8,40 @@ from src.visualization.artifacts.visualization import (
     Visualization
 )
 
+from src.visualization.loaders.manifest_loader import (
+    filter_manifest
+)
+
 
 def visualize(
-    attributions,
+    manifest,
     classes=None,
+    filenames=None,
+    attribution_ids=None,
     max_samples=None,
     **kwargs
 ):
 
-    if classes is None:
+    selected = filter_manifest(
+        manifest,
+        classes=classes,
+        filenames=filenames,
+        attribution_ids=attribution_ids,
+        max_samples=max_samples
+    )
 
-        selected = attributions
+    for _, row in selected.iterrows():
 
-    else:
-
-        selected = {
-
-            cls: attributions[cls]
-
-            for cls in classes
-
-            if cls in attributions
-
-        }
-
-    for class_name, npz_paths in selected.items():
-
-        npz_paths = sorted(
-            map(Path, npz_paths)
+        figure = build_visualization(
+            npz_path=row["attribution_path"],
+            **kwargs
         )
 
-        if max_samples is not None:
+        if figure is None:
+            continue
 
-            npz_paths = npz_paths[:max_samples]
-
-        for npz_path in npz_paths:
-
-            figure = build_visualization(
-                npz_path=npz_path,
-                **kwargs
-            )
-
-            if figure is None:
-                continue
-
-            yield Visualization(
-                figure=figure,
-                class_name=class_name,
-                npz_path=npz_path
-            )
+        yield Visualization(
+            figure=figure,
+            class_name=row["ground_truth"],
+            npz_path=row["attribution_path"]
+        )

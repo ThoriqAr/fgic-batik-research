@@ -6,6 +6,7 @@ def build_lime_explanation(
     model,
     original_image,
     preprocess_fn,
+    target_class,
     num_samples=1000,
     n_segments=150,
     compactness=5,
@@ -45,30 +46,41 @@ def build_lime_explanation(
             start_label=0
         )
     
-    explanation = (
-        explainer.explain_instance(
-            image=original_image.astype(
-                np.double
-            ),
-            classifier_fn=predict_fn,
-            top_labels=1,
-            num_samples=num_samples,
-            segmentation_fn=segmentation_fn
-        )
-    )
+    if target_class is not None:
 
-    top_label = (
-        explanation.top_labels[0]
-    )
+        explanation = (
+            explainer.explain_instance(
+                image=original_image.astype(np.double),
+                classifier_fn=predict_fn,
+                labels=[target_class],
+                top_labels=None,
+                num_samples=num_samples,
+                segmentation_fn=segmentation_fn
+            )
+        )
+
+        label = target_class
+
+    else:
+
+        explanation = (
+            explainer.explain_instance(
+                image=original_image.astype(np.double),
+                classifier_fn=predict_fn,
+                top_labels=1,
+                num_samples=num_samples,
+                segmentation_fn=segmentation_fn
+            )
+        )
+
+        label = explanation.top_labels[0]
 
     segments = (
         explanation.segments
     )
 
     local_exp = dict(
-        explanation.local_exp[
-            top_label
-        ]
+        explanation.local_exp[label]
     )
 
     return {
@@ -81,6 +93,7 @@ def generate_lime(
     model,
     original_image,
     preprocess_fn,
+    target_class,
     num_samples=1000,
     n_segments=150,
     compactness=5,
@@ -93,6 +106,7 @@ def generate_lime(
             model=model,
             original_image=original_image,
             preprocess_fn=preprocess_fn,
+            target_class=target_class,
             num_samples=num_samples,
             n_segments=n_segments,
             compactness=compactness,
