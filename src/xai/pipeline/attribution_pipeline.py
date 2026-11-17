@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 from tqdm.auto import tqdm
 from datetime import datetime
@@ -102,6 +103,8 @@ def run_attribution(
     print(
         f"\n[4/5] Generate Attribution Maps"
     )
+
+    start_time = time.time()
 
     experiment_id = (
         f"{attribution_config.experiment_name}_"
@@ -297,6 +300,9 @@ def run_attribution(
 
             continue
 
+    runtime_seconds = (
+        time.time() - start_time
+    )
 
     print("\n[5/5] Save artifacts...")
 
@@ -336,6 +342,7 @@ def run_attribution(
         saved_images=len(records),
         filtered_images=filtered_images,
         error_images=error_images,
+        runtime_seconds=runtime_seconds,
         confidence_stats=confidence_stats,
         confidence_bins=confidence_bins,
         class_distribution_saved=class_distribution_saved,

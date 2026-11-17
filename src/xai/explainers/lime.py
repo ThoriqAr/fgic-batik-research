@@ -13,29 +13,38 @@ def build_lime_explanation(
     sigma=1,
     seed=42
 ):
-    
+
+    # membuat objek LIME yang akan digunakan untuk menghasilkan
+    # explanation pada citra yang diinputkan
     explainer = (
         lime_image.LimeImageExplainer(
             random_state=seed
         )
     )
 
+    # Fungsi untuk menerima kumpulan citra hasil perturbasi
+    # lalu melakukan preprocessing dan prediksi menggunakan model
     def predict_fn(images):
 
+        # mengubah input menjadi numpy array float32
         images = np.asarray(
             images,
             dtype=np.float32
         )
 
+        # melakukan preprocessing sesuai preprocessing model
         images = preprocess_fn(
             images
         )
 
+        # Forward propagation pada model untuk memperoleh
+        # probabilitas prediksi setiap kelas
         return model.predict(
             images,
             verbose=0
         )
 
+    # Citra dibagi menjadi beberapa superpixel menggunakan algirutma slic
     def segmentation_fn(image):
 
         return slic(
@@ -45,9 +54,18 @@ def build_lime_explanation(
             sigma=sigma,
             start_label=0
         )
-    
+
+    # menentukan kelas yang akan dijelakan
+    # jika target_class diberikan, maka LIME menjelaskan kelas tersebut
+    # jika tidak maka LIME memilih kelas dengan prediksi tertinggi
     if target_class is not None:
 
+        # 1. melakukan segmentasi menjadi superpixel,
+        # 2. membuat sampel perturbasi,
+        # 3. meminta model memprediksi setiap sampel,
+        # 4. memberikan bobot berdasarkan kedekatan dengan citra asli,
+        # 5. membangun model surrogate lokal,
+        # 6. memperoleh weight setiap superpixel.
         explanation = (
             explainer.explain_instance(
                 image=original_image.astype(np.double),
@@ -75,10 +93,12 @@ def build_lime_explanation(
 
         label = explanation.top_labels[0]
 
+    # mengambil hasil segmentasi superpixel
     segments = (
         explanation.segments
     )
 
+    # mengambil id superpixel dan weight yang diberikan LIME
     local_exp = dict(
         explanation.local_exp[label]
     )

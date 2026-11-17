@@ -7,6 +7,15 @@ from src.utils.path_config import (
     METADATA_DIR
 )
 
+def sort_split(df):
+    return (
+        df
+        .sort_values(
+            ["class_id", "filepath"]
+        )
+        .reset_index(drop=True)
+    )
+
 def create_split(
     train_ratio=0.7,
     val_ratio=0.15,
@@ -39,6 +48,19 @@ def create_split(
 
     df = pd.DataFrame(records)
 
+    df = (
+        pd.DataFrame(records)
+        .sort_values(
+            ["class_id", "filepath"]
+        )
+        .reset_index(drop=True)
+    )
+
+    df.to_csv(
+        METADATA_DIR / "dataset.csv",
+        index=False
+    )
+
     train_df, temp_df = train_test_split(
         df,
         train_size=train_ratio,
@@ -57,6 +79,10 @@ def create_split(
         stratify=temp_df["class_id"],
         random_state=random_state
     )
+
+    train_df = sort_split(train_df)
+    val_df = sort_split(val_df)
+    test_df = sort_split(test_df)
 
     train_df.to_csv(
         METADATA_DIR / "train.csv",

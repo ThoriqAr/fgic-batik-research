@@ -1,14 +1,8 @@
 from sklearn.metrics import auc
 
 
-def compute_auc(
-    x,
-    y
-):
+def compute_auc(x, y):
 
     return float(
-        auc(
-            x,
-            y
-        )
+        auc(x, y)
     )

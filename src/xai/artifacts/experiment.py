@@ -13,12 +13,35 @@ def build_experiment_config(
     saved_images,
     filtered_images,
     error_images,
+    runtime_seconds,
     confidence_stats,
     confidence_bins,
     class_distribution_saved,
     class_distribution_filtered,
     method_config=None
 ):
+
+    runtime_minutes = (
+        runtime_seconds / 60
+    )
+
+    samples_per_second = (
+        saved_images / runtime_seconds
+        if runtime_seconds > 0
+        else 0.0
+    )
+
+    samples_per_minute = (
+        saved_images / runtime_minutes
+        if runtime_minutes > 0
+        else 0.0
+    )
+
+    seconds_per_sample = (
+        runtime_seconds / saved_images
+        if saved_images > 0
+        else 0.0
+    )
 
     return {
 
@@ -81,6 +104,21 @@ def build_experiment_config(
 
         "error_images":
             error_images,
+
+        "runtime_seconds":
+            float(runtime_seconds),
+
+        "runtime_minutes":
+            float(runtime_minutes),
+
+        "samples_per_second":
+            float(samples_per_second),
+
+        "samples_per_minute":
+            float(samples_per_minute),
+
+        "seconds_per_sample":
+            float(seconds_per_sample),
 
         "confidence_statistics":
             confidence_stats,
